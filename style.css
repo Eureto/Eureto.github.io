@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(#5e3b3b, #6e6e6e);
+    height: 100vh;
+    display: flex;
+}
+
+#ChangeLocationButton {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid;
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+    z-index: 10;
+}
+
+#ChangeLocationButton:hover {
+    border: none;
+}
+
+#LeftSide {
+    position: absolute;
+    height: 100%;
+    width: 50vw;
+    z-index: 1;
+    background-color: aquamarine;
+}
+
+#RightSide {
+    position: relative;
+    height: 100%;
+    width: 50vw;
+    z-index: 0;
+    left: 50%;
+    background-color: aliceblue;
+}
+#map {
+    height: 100%;
+  }
+  
