@@ -10,21 +10,36 @@ body {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid;
     position: absolute;
-    bottom: 2%;
-    left: 2%;
-    z-index: 10;
+    bottom: 20px;
+    left: 20px;
+    z-index: 99;
+    width: 50px;
+    height: 28px;
+    border-radius: 50px;
+    color:white;
 }
 
-#ChangeLocationButton:hover {
-    border: none;
+#dot{
+    position: relative;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: aliceblue;
+    border-radius: 100%;
+    transition-duration: 0.3s;
 }
+
 
 #LeftSide {
     position: absolute;
     height: 100%;
     width: 50vw;
     z-index: 1;
-    background-color: aquamarine;
+    background-color: #2c2b2b;
+    color:#454545;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #RightSide {
@@ -33,9 +48,22 @@ body {
     width: 50vw;
     z-index: 0;
     left: 50%;
-    background-color: aliceblue;
+    background-color: #343332;
 }
-#map {
+
+#map{
     height: 100%;
-  }
-  
+    width: 100%;
+}
+
+#showTime{
+    font-size: 50px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-flow: row;
+    justify-content: center;
+    align-items: baseline;
+}
+
+
+
