@@ -3,8 +3,8 @@ let selectedHour = null;
 let cacheSelectedHour = null;
 let selectedDay = 0;
 function Start() {
-    // let date = new Date('January 19, 2010 23:15:30');
-    let date = new Date();
+    let date = new Date('January 19, 2010 23:15:30');
+    // let date = new Date();
 
     let hour = date.getHours();
 
@@ -94,7 +94,7 @@ function loadLightTheme() {
     document.getElementById('RightSide').style.backgroundColor = "#f4f4f1";
     document.getElementById('dot').style.backgroundColor = "#343332";
     document.getElementById('ChangeLocationButton').style.borderColor = "#343332";
-
+    document.getElementById('earthIcon').src = '/icons/white-24dp/1x/outline_public_white_24dp.png';
 
     mapTheme = "mapbox/light-v10";
 }
@@ -131,11 +131,11 @@ async function getTimeZone(lat, lng) {
             selectedHour = hoursOffset + utcHour;
             if (selectedHour < 0) {
                 selectedHour = 24 + selectedHour;
-                selectedDay = -1;
+                selectedDay = 1;
 
             } else if (selectedHour > 23) {
                 selectedHour = Math.abs(24 - selectedHour);
-                selectedDay =  1;
+                selectedDay = -1;
             }
             else{
                 selectedDay = 0;
