@@ -2,9 +2,10 @@ let mapTheme = "mapbox/dark-v10"
 let selectedHour = null;
 let cacheSelectedHour = null;
 let selectedDay = 0;
+
 function Start() {
-    let date = new Date('January 19, 2010 23:15:30');
-    // let date = new Date();
+    // let date = new Date('January 19, 2010 23:15:30');
+    let date = new Date();
 
     let hour = date.getHours();
 
@@ -14,7 +15,8 @@ function Start() {
         loadDarkTheme();
     }
     setInterval(showTime, 1000);
-    navigator.geolocation.getCurrentPosition(getLatLon, showError);
+    //zapytanie o lokalizacje
+    navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
 
 }
 
@@ -22,8 +24,8 @@ function showTime() {
     let localTime = new Date();
 
     let day = (localTime.getDay()) - selectedDay;
-    if(day < 0) day = 6;
-    if(day > 6) day = 0;
+    if (day < 0) day = 6;
+    if (day > 6) day = 0;
     switch (day) {
         case 0:
             document.getElementById("day").innerHTML = "Nd.";
@@ -100,6 +102,7 @@ function loadLightTheme() {
 }
 
 function ShowHideMap() {
+
     let leftSide = document.getElementById("LeftSide");
 
     if (document.getElementById("dot").style.left == "20px") {
@@ -136,12 +139,18 @@ async function getTimeZone(lat, lng) {
             } else if (selectedHour > 23) {
                 selectedHour = Math.abs(24 - selectedHour);
                 selectedDay = -1;
-            }
-            else{
+            } else {
                 selectedDay = 0;
             }
         }
     } catch (err) {
+        let confirmRedirect = confirm(`Aby skorzystać z wszystkich funkcji strony należy udać sie pod adres https://cors-anywhere.herokuapp.com/ i klikąć w przycik :)
+        Czy chcesz udać się pod ten adres ?`);
+        if (confirmRedirect == true) {
+            window.location = "https://cors-anywhere.herokuapp.com/";
+        } else {
+            alert("Nie możesz skorzystac z wszystkich funkcji");
+        }
         console.error(err.message);
     }
 }
@@ -149,10 +158,10 @@ async function getTimeZone(lat, lng) {
 
 function LoadMap(lat, lng) {
 
-    var map = L.map('map',{
+    var map = L.map('map', {
         'worldCopyJump': true
     }).setView([lat, lng], 10);
-    
+
     var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 20,
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -180,7 +189,8 @@ function getLatLon(position) {
     LoadMap(latitude, longitude);
 }
 
-async function showError(error) {
+async function UserLocationDenied(error) {
+    //Jeśli uzytkownik nie zgodzi sie na udostępnienie lokalizacji to na mapie pokaze sie likalizacja stolicy panstwa w ktorym jest
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     let timeZoneArr = timeZone.split('/');
     let capital = timeZoneArr[1];

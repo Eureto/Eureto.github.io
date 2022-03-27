@@ -15,10 +15,10 @@ body {
     width: 50px;
     height: 28px;
     border-radius: 50px;
-    color:white;
+    color: white;
 }
 
-#dot{
+#dot {
     position: relative;
     left: 0px;
     height: 20px;
@@ -35,7 +35,7 @@ body {
     width: 50vw;
     z-index: 1;
     background-color: #2c2b2b;
-    color:#454545;
+    color: #454545;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,12 +51,15 @@ body {
     background-color: #343332;
 }
 
-#map{
+#map {
     height: 100%;
     width: 100%;
 }
 
-#showTime{
+#showTime {
+    font-family: 'Caveat', cursive;
+    /* font-family: 'Qahiri', sans-serif; */
+    /* font-family: 'Red Hat Mono', monospace; */
     font-size: 50px;
     display: flex;
     flex-wrap: nowrap;
@@ -64,6 +67,3 @@ body {
     justify-content: center;
     align-items: baseline;
 }
-
-
-
