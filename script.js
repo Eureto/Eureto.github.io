@@ -2,7 +2,7 @@ let mapTheme = "mapbox/dark-v10"
 let CORSPromptOccured = false;
 let timeOffset = 0;
 let showLocalTimeInterval;
-
+let prevM;
 function Start() {
     // let date = new Date('January 19, 2010 23:15:30');
     let date = new Date();
@@ -17,6 +17,13 @@ function Start() {
     showLocalTimeInterval = setInterval(ShowLocalTime, 1000);
     //zapytanie o lokalizacje
     navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
+
+}
+function changeMinute(m){
+    if(prevM != m)
+    {
+        //jak to kurwa jest ze to sie nie zmienia
+    }
 
 }
 
