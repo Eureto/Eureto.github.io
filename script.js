@@ -1,7 +1,7 @@
 let mapTheme = "mapbox/dark-v10"
-let selectedHour = null;
-let cacheSelectedHour = null;
-let selectedDay = 0;
+let CORSPromptOccured = false;
+let timeOffset = 0;
+let showLocalTimeInterval;
 
 function Start() {
     // let date = new Date('January 19, 2010 23:15:30');
@@ -14,18 +14,16 @@ function Start() {
     } else {
         loadDarkTheme();
     }
-    setInterval(showTime, 1000);
+    showLocalTimeInterval = setInterval(ShowLocalTime, 1000);
     //zapytanie o lokalizacje
     navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
 
 }
 
-function showTime() {
+function ShowLocalTime() {
     let localTime = new Date();
 
-    let day = (localTime.getDay()) - selectedDay;
-    if (day < 0) day = 6;
-    if (day > 6) day = 0;
+    let day = localTime.getDay();
     switch (day) {
         case 0:
             document.getElementById("day").innerHTML = "Nd.";
@@ -50,32 +48,17 @@ function showTime() {
             break;
     }
 
-    if (selectedHour != null) {
-        if (cacheSelectedHour == selectedHour) {
-            document.getElementById("hour").innerHTML = selectedHour;
-        } else {
-            if (selectedHour < 10) {
-                selectedHour = "0" + selectedHour;
-            }
-            selectedHour = selectedHour + ":";
-            document.getElementById("hour").innerHTML = selectedHour;
-            cacheSelectedHour = selectedHour;
-        }
-    } else {
-        let hour = localTime.getHours();
-        if (hour < 10) {
-            hour = "0" + hour;
-        }
-        hour = hour + ":";
-        document.getElementById("hour").innerHTML = hour;
+    let hour = localTime.getHours();
+    if (hour < 10) {
+        hour = "0" + hour;
     }
+    document.getElementById("hour").innerHTML = hour;
+
     let minute = localTime.getMinutes();
     if (minute < 10) {
         minute = "0" + minute;
     }
-    minute = minute + ":";
     document.getElementById("minute").innerHTML = minute;
-
 
     let second = localTime.getSeconds();
     if (second < 10) {
@@ -86,8 +69,58 @@ function showTime() {
 
 }
 
-function loadDarkTheme() {
+function ShowSelectedTime(){
+    let utc = new Date();
+    let utcDate = new Date(utc.getUTCFullYear(), utc.getUTCMonth(), utc.getUTCDate(), utc.getUTCHours(), utc.getUTCMinutes(), utc.getUTCSeconds());
+    let selectedTime = new Date(utcDate.getTime() + timeOffset);
 
+    let day = selectedTime.getDay();
+    switch (day) {
+        case 0:
+            document.getElementById("day").innerHTML = "Nd.";
+            break;
+        case 1:
+            document.getElementById("day").innerHTML = "Pn.";
+            break;
+        case 2:
+            document.getElementById("day").innerHTML = "Wt.";
+            break;
+        case 3:
+            document.getElementById("day").innerHTML = "Śr.";
+            break;
+        case 4:
+            document.getElementById("day").innerHTML = "Czw.";
+            break;
+        case 5:
+            document.getElementById("day").innerHTML = "Pt.";
+            break;
+        case 6:
+            document.getElementById("day").innerHTML = "So.";
+            break;
+    }
+
+    let hour = selectedTime.getHours();
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+    document.getElementById("hour").innerHTML = hour;
+
+    let minute = selectedTime.getMinutes();
+    if (minute < 10) {
+        minute = "0" + minute;
+    }
+    document.getElementById("minute").innerHTML = minute;
+
+    let second = selectedTime.getSeconds();
+    if (second < 10) {
+        second = "0" + second;
+    }
+    document.getElementById("second").innerHTML = second;
+}
+
+
+function loadDarkTheme() {
+    document.getElementById("LeftSide").style.color = "#9ca09b";
 
 }
 
@@ -120,7 +153,6 @@ function ShowHideMap() {
 }
 
 async function getTimeZone(lat, lng) {
-    //let urlGeoNames = `http://api.geonames.org/timezoneJSON?lat=${lat}&lng=${lng}&username=test1001`;
     let urlAskGeo = `https://api.askgeo.com/v1/3184/15d3f88ebfda51723889e9ce993da47e897fb09407fd60d2a1377a54d658e186/query.json?databases=TimeZone&points=${lat}%2C${lng}`;
     let urlProxy = 'https://cors-anywhere.herokuapp.com/';
 
@@ -128,28 +160,22 @@ async function getTimeZone(lat, lng) {
         let response = await fetch(urlProxy + urlAskGeo);
         let JSON = await response.json();
         if (response.ok) {
-            let MSecOffset = JSON.data["0"].TimeZone.CurrentOffsetMs;
-            let hoursOffset = MSecOffset / 3600000;
-            let utcHour = new Date().getUTCHours();
-            selectedHour = hoursOffset + utcHour;
-            if (selectedHour < 0) {
-                selectedHour = 24 + selectedHour;
-                selectedDay = 1;
-
-            } else if (selectedHour > 23) {
-                selectedHour = Math.abs(24 - selectedHour);
-                selectedDay = -1;
-            } else {
-                selectedDay = 0;
-            }
+            timeOffset = JSON.data["0"].TimeZone.CurrentOffsetMs;
+            clearInterval(showLocalTimeInterval);
+            let showSelectedTimeInterval = setInterval(ShowSelectedTime,1000);
+            clearInterval(showSelectedTimeInterval);
+            showSelectedTimeInterval = setInterval(ShowSelectedTime,1000);
         }
     } catch (err) {
-        let confirmRedirect = confirm(`Aby skorzystać z wszystkich funkcji strony należy udać sie pod adres https://cors-anywhere.herokuapp.com/ i klikąć w przycik :)
+        if (!CORSPromptOccured) {
+            let confirmRedirect = confirm(`Aby skorzystać z wszystkich funkcji strony należy udać sie pod adres https://cors-anywhere.herokuapp.com/ i klikąć w przycik :)
         Czy chcesz udać się pod ten adres ?`);
-        if (confirmRedirect == true) {
-            window.location = "https://cors-anywhere.herokuapp.com/";
-        } else {
-            alert("Nie możesz skorzystac z wszystkich funkcji");
+            if (confirmRedirect == true) {
+                window.location = "https://cors-anywhere.herokuapp.com/";
+            } else {
+                alert("Nie możesz skorzystac z wszystkich funkcji");
+            }
+            CORSPromptOccured = true;
         }
         console.error(err.message);
     }
@@ -199,8 +225,6 @@ async function UserLocationDenied(error) {
     let response = await fetch(`/JSON/${continent}.json`);
     let JSON = await response.json();
     if (response.ok) {
-        console.log(JSON);
-        console.log(response);
         let JSONlen = JSON.length;
         for (let i = 0; i <= JSONlen; i++) {
             if (JSON[i].properties.capital == capital) {
