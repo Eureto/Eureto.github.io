@@ -76,51 +76,70 @@ body {
 #minute-1 {
     z-index: 10;
     position: absolute;
-    animation: minute1 30s infinite;
-    animation-play-state: play;
+    animation: minute1 180s infinite;
+    animation-play-state: paused;
 }
 
 @keyframes minute1 {
     0% {
         opacity: 100%;
         transform: translateY(-1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
+
     }
 
     2% {
         transform: translateY(0px);
         opacity: 100%;
+        color: #9ca09b;
+        font-size: 50px;
     }
 
     33% {
         transform: translateY(0px);
+        color: #9ca09b;
+        font-size: 50px;
     }
 
     35% {
         transform: translateY(1.3em);
-    }
-
-    65.5% {
-        opacity: 100%;
-        transform: translateY(1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     66% {
-        opacity: 0%;
-        transform: translate(1.3em);
-    }
-
-    66.01% {
-        opacity: 0%;
-        transform: translate(-1.3em);
+        opacity: 100%;
+        transform: translateY(1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     66.5% {
+        opacity: 0%;
+        transform: translate(1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
+    }
+
+    66.51% {
+        opacity: 0%;
+        transform: translate(-1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
+    }
+
+    67% {
         opacity: 100%;
         transform: translateY(-1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     100% {
         transform: translateY(-1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
 
@@ -129,49 +148,68 @@ body {
 #minute-2 {
     z-index: 20;
     position: absolute;
-    animation: minute2 30s infinite;
+    animation: minute2 180s infinite;
+    animation-play-state: paused;
 
 }
 
 @keyframes minute2 {
     0% {
         transform: translate(0px);
+        color: #9ca09b;
+        font-size: 50px;
     }
 
     2% {
         transform: translateY(1.3em);
-    }
-
-    32.5% {
-        transform: translateY(1.3em);
-        opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     33% {
-        opacity: 0%;
         transform: translateY(1.3em);
-    }
-
-    33.01% {
-        opacity: 0%;
-        transform: translateY(-1.3em);
+        opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     33.5% {
+        opacity: 0%;
+        transform: translateY(1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
+    }
+
+    33.51% {
+        opacity: 0%;
+        transform: translateY(-1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
+    }
+
+    34% {
         transform: translateY(-1.3em);
         opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     66% {
         transform: translateY(-1.3em);
+        color: #9ca09b4b;
+        font-size: 40px;
     }
 
     68% {
         transform: translateY(0px);
+        color: #9ca09b;
+        font-size: 50px;
     }
 
     100% {
         transform: translateY(0px);
+        color: #9ca09b;
+        font-size: 50px;
     }
 
 }
@@ -179,8 +217,8 @@ body {
 #minute-3 {
     z-index: 30;
     position: absolute;
-    animation: minute3 30s infinite;
-    animation-play-state: play;
+    animation: minute3 180s infinite;
+    animation-play-state: paused;
 }
 
 
@@ -188,40 +226,56 @@ body {
     0% {
      transform: translateY(1.3em);
      opacity: 100%;   
+     color: #9ca09b4b;
+     font-size: 40px;
     }
     0.5%{
         transform: translateY(1.3em);
         opacity: 0%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
     0.51%{
         transform: translateY(-1.3em);
         opacity: 0%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
     1%{
         transform: translateY(-1.3em);
         opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
     33%{
         transform: translateY(-1.3em);
         opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
     35%{
         transform: translateY(0px);
         opacity: 100%;
+        color: #9ca09b;
+        font-size: 50px;
     }
     66%{
         transform: translateY(0px);
         opacity: 100%;
+        color: #9ca09b;
+        font-size: 50px;
     }
     68%{
         transform: translateY(1.3em);
         opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
     100%{
         transform: translateY(1.3em);
         opacity: 100%;
+        color: #9ca09b4b;
+        font-size: 40px;
     }
-
-
 
 }

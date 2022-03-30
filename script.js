@@ -2,7 +2,11 @@ let mapTheme = "mapbox/dark-v10"
 let CORSPromptOccured = false;
 let timeOffset = 0;
 let showLocalTimeInterval;
+let firstTimeChangeMinuteFunction = true;
+let currentM = 3;
 let prevM;
+let min = [];
+
 function Start() {
     // let date = new Date('January 19, 2010 23:15:30');
     let date = new Date();
@@ -14,17 +18,68 @@ function Start() {
     } else {
         loadDarkTheme();
     }
-    showLocalTimeInterval = setInterval(ShowLocalTime, 1000);
+    showLocalTimeInterval = setInterval(ShowLocalTime, 10);
     //zapytanie o lokalizacje
     navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
 
 }
-function changeMinute(m){
-    if(prevM != m)
-    {
-        //jak to kurwa jest ze to sie nie zmienia
-    }
 
+function ChangeMinute(m) {
+
+    if (firstTimeChangeMinuteFunction) {
+        a = currentM - 2;
+        b = currentM - 1;
+        c = currentM;
+        if(a == (-1)) {a = 2; b = 3}
+        if(a == 0) a = 3;
+
+        min[a] = m + 1;
+        min[b] = m;
+        min[c] = m - 1;
+
+        if (min[a] > 59) {
+            min[a] = '0';
+        }
+        if (min[a] < 10) {
+            min[a] = '0' + min[a];
+        }
+        if (min[b] < 10) {
+            min[b] = '0' + min[b];
+        }
+        if (min[c] < 0) {
+            min[c] = 59;
+        }
+        if (min[c] < 10) {
+            min[c] = '0' + min[c];
+        }
+
+
+        document.getElementById('minute-1').innerHTML = min[1];
+        document.getElementById('minute-2').innerHTML = min[2];
+        document.getElementById('minute-3').innerHTML = min[3];
+
+        firstTimeChangeMinuteFunction = false;
+    } else {
+        if (prevM != m) {
+            document.getElementById('minute-1').style.animationPlayState = "running";
+            document.getElementById('minute-2').style.animationPlayState = "running";
+            document.getElementById('minute-3').style.animationPlayState = "running";
+            min[currentM] = m + 1;
+            if (min[currentM] < 10) {
+                min[currentM] = '0' + min[currentM];
+            }else if(min[currentM] == 60)
+            {
+                min[currentM] = "00";
+            }
+            document.getElementById(`minute-${currentM}`).innerHTML = min[currentM];
+            currentM--;
+            if(currentM < 1)
+            {
+                currentM = 3;
+            }
+        }
+    }
+    prevM = m;
 }
 
 function ShowLocalTime() {
@@ -62,10 +117,12 @@ function ShowLocalTime() {
     document.getElementById("hour").innerHTML = hour;
 
     let minute = localTime.getMinutes();
-    if (minute < 10) {
-        minute = "0" + minute;
-    }
-    document.getElementById("minute").innerHTML = minute;
+    ChangeMinute(minute);
+
+    // if (minute < 10) {
+    //     minute = "0" + minute;
+    // }
+    // document.getElementById("minute").innerHTML = minute;
 
     let second = localTime.getSeconds();
     if (second < 10) {
@@ -76,7 +133,7 @@ function ShowLocalTime() {
 
 }
 
-function ShowSelectedTime(){
+function ShowSelectedTime() {
     let utc = new Date();
     let utcDate = new Date(utc.getUTCFullYear(), utc.getUTCMonth(), utc.getUTCDate(), utc.getUTCHours(), utc.getUTCMinutes(), utc.getUTCSeconds());
     let selectedTime = new Date(utcDate.getTime() + timeOffset);
@@ -113,10 +170,12 @@ function ShowSelectedTime(){
     document.getElementById("hour").innerHTML = hour;
 
     let minute = selectedTime.getMinutes();
-    if (minute < 10) {
-        minute = "0" + minute;
-    }
-    document.getElementById("minute").innerHTML = minute;
+    ChangeMinute(minute);
+    
+    // if (minute < 10) {
+    //     minute = "0" + minute;
+    // }
+    // document.getElementById("minute").innerHTML = minute;
 
     let second = selectedTime.getSeconds();
     if (second < 10) {
@@ -169,9 +228,10 @@ async function getTimeZone(lat, lng) {
         if (response.ok) {
             timeOffset = JSON.data["0"].TimeZone.CurrentOffsetMs;
             clearInterval(showLocalTimeInterval);
-            let showSelectedTimeInterval = setInterval(ShowSelectedTime,1000);
+            let showSelectedTimeInterval = setInterval(ShowSelectedTime, 1000);
             clearInterval(showSelectedTimeInterval);
-            showSelectedTimeInterval = setInterval(ShowSelectedTime,1000);
+            showSelectedTimeInterval = setInterval(ShowSelectedTime, 1000);
+            firstTimeChangeMinuteFunction = true;
         }
     } catch (err) {
         if (!CORSPromptOccured) {
