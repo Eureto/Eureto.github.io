@@ -3,9 +3,17 @@ let CORSPromptOccured = false;
 let timeOffset = 0;
 let showLocalTimeInterval;
 let firstTimeChangeMinuteFunction = true;
+let firstTimeChangeSecondFunction = true;
+let firstTimeChangeHourFunction = true;
 let currentM = 3;
+let currentS = 3;
+let currentH = 3;
 let prevM;
+let prevS;
+let prevH;
 let min = [];
+let sec = [];
+let hour = [];
 
 function Start() {
     // let date = new Date('January 19, 2010 23:15:30');
@@ -18,10 +26,68 @@ function Start() {
     } else {
         loadDarkTheme();
     }
-    showLocalTimeInterval = setInterval(ShowLocalTime, 10);
+    showLocalTimeInterval = setInterval(ShowLocalTime, 2);
     //zapytanie o lokalizacje
     navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
 
+}
+
+function ChangeSecond(s) {
+
+    if (firstTimeChangeSecondFunction) {
+        a = currentS - 2;
+        b = currentS - 1;
+        c = currentS;
+        if(a == (-1)) {a = 2; b = 3}
+        if(a == 0) a = 3;
+
+        sec[a] = s + 1;
+        sec[b] = s;
+        sec[c] = s - 1;
+
+        if (sec[a] > 59) {
+            sec[a] = '0';
+        }
+        if (sec[a] < 10) {
+            sec[a] = '0' + sec[a];
+        }
+        if (sec[b] < 10) {
+            sec[b] = '0' + sec[b];
+        }
+        if (sec[c] < 0) {
+            sec[c] = 59;
+        }
+        if (sec[c] < 10) {
+            sec[c] = '0' + sec[c];
+        }
+
+
+        document.getElementById('second-1').innerHTML = sec[1];
+        document.getElementById('second-2').innerHTML = sec[2];
+        document.getElementById('second-3').innerHTML = sec[3];
+
+        firstTimeChangeSecondFunction = false;
+    } else {
+        if (prevS != s) {
+            document.getElementById('second-1').style.animationPlayState = "running";
+            document.getElementById('second-2').style.animationPlayState = "running";
+            document.getElementById('second-3').style.animationPlayState = "running";
+            sec[currentS] = s + 1;
+            if (sec[currentS] < 10) {
+                sec[currentS] = '0' + sec[currentS];
+            }else if(sec[currentS] == 60)
+            {
+                sec[currentS] = "00";
+            }
+            document.getElementById(`second-${currentS}`).innerHTML = sec[currentS];
+            currentS--;
+            if(currentS < 1)
+            {
+                currentS = 3;
+            }
+        }
+    }
+    prevS = s;
 }
 
 function ChangeMinute(m) {
@@ -82,6 +148,66 @@ function ChangeMinute(m) {
     prevM = m;
 }
 
+function ChangeHour(h) {
+
+    if (firstTimeChangeHourFunction) {
+        a = currentH - 2;
+        b = currentH - 1;
+        c = currentH;
+        if(a == (-1)) {a = 2; b = 3}
+        if(a == 0) a = 3;
+
+        hour[a] = h + 1;
+        hour[b] = h;
+        hour[c] = h - 1;
+
+        if(hour[a] < 10) {
+            hour[a] = '0' + hour[a];
+        }
+        if(hour[a] > 23)
+        {
+            hour[a] = '00';
+        }
+        if(hour[b] < 10) {
+            hour[b] = '0' + hour[b];
+        }
+        if(hour[c] < 0)
+        {
+            hour[c] = 23;
+        }
+        if(hour[c] < 10) {
+            hour[c] = '0' + hour[c];
+        }
+
+
+        document.getElementById('hour-1').innerHTML = hour[1];
+        document.getElementById('hour-2').innerHTML = hour[2];
+        document.getElementById('hour-3').innerHTML = hour[3];
+
+        firstTimeChangeHourFunction = false;
+    } else {
+        if (prevH != h) {
+            document.getElementById('hour-1').style.animationPlayState = "running";
+            document.getElementById('hour-2').style.animationPlayState = "running";
+            document.getElementById('hour-3').style.animationPlayState = "running";
+            hour[currentH] = h + 1;
+            if (hour[currentH] < 10) {
+                hour[currentH] = '0' + hour[currentH];
+            }else if(hour[currentH] == 24)
+            {
+                hour[currentH] = "00";
+            }
+            document.getElementById(`hour-${currentH}`).innerHTML = hour[currentH];
+            currentH--;
+            if(currentH < 1)
+            {
+                currentH = 3;
+            }
+        }
+    }
+    prevH = h;
+}
+
 function ShowLocalTime() {
     let localTime = new Date();
 
@@ -111,10 +237,12 @@ function ShowLocalTime() {
     }
 
     let hour = localTime.getHours();
-    if (hour < 10) {
-        hour = "0" + hour;
-    }
-    document.getElementById("hour").innerHTML = hour;
+    ChangeHour(hour);
+    
+    // if (hour < 10) {
+    //     hour = "0" + hour;
+    // }
+    // document.getElementById("hour").innerHTML = hour;
 
     let minute = localTime.getMinutes();
     ChangeMinute(minute);
@@ -125,10 +253,11 @@ function ShowLocalTime() {
     // document.getElementById("minute").innerHTML = minute;
 
     let second = localTime.getSeconds();
-    if (second < 10) {
-        second = "0" + second;
-    }
-    document.getElementById("second").innerHTML = second;
+    ChangeSecond(second);
+    // if (second < 10) {
+    //     second = "0" + second;
+    // }
+    // document.getElementById("second").innerHTML = second;
 
 
 }
@@ -164,10 +293,12 @@ function ShowSelectedTime() {
     }
 
     let hour = selectedTime.getHours();
-    if (hour < 10) {
-        hour = "0" + hour;
-    }
-    document.getElementById("hour").innerHTML = hour;
+    ChangeHour(hour);
+    
+    // if (hour < 10) {
+    //     hour = "0" + hour;
+    // }
+    // document.getElementById("hour").innerHTML = hour;
 
     let minute = selectedTime.getMinutes();
     ChangeMinute(minute);
@@ -178,16 +309,16 @@ function ShowSelectedTime() {
     // document.getElementById("minute").innerHTML = minute;
 
     let second = selectedTime.getSeconds();
-    if (second < 10) {
-        second = "0" + second;
-    }
-    document.getElementById("second").innerHTML = second;
+    ChangeSecond(second);
+    // if (second < 10) {
+    //     second = "0" + second;
+    // }
+    // document.getElementById("second").innerHTML = second;
 }
 
 
 function loadDarkTheme() {
     document.getElementById("LeftSide").style.color = "#9ca09b";
-
 }
 
 function loadLightTheme() {
@@ -196,8 +327,11 @@ function loadLightTheme() {
     document.getElementById('dot').style.backgroundColor = "#343332";
     document.getElementById('ChangeLocationButton').style.borderColor = "#343332";
     document.getElementById('earthIcon').src = '/icons/white-24dp/1x/outline_public_white_24dp.png';
+    document.getElementById("showTime").style.setProperty('--main-color','#454545');
+    document.getElementById("showTime").style.setProperty('--sec-color','#9ca09b');
 
     mapTheme = "mapbox/light-v10";
+    
 }
 
 function ShowHideMap() {
@@ -228,10 +362,14 @@ async function getTimeZone(lat, lng) {
         if (response.ok) {
             timeOffset = JSON.data["0"].TimeZone.CurrentOffsetMs;
             clearInterval(showLocalTimeInterval);
+
             let showSelectedTimeInterval = setInterval(ShowSelectedTime, 1000);
             clearInterval(showSelectedTimeInterval);
             showSelectedTimeInterval = setInterval(ShowSelectedTime, 1000);
+
             firstTimeChangeMinuteFunction = true;
+            firstTimeChangeSecondFunction = true;
+            firstTimeChangeHourFunction = true;
         }
     } catch (err) {
         if (!CORSPromptOccured) {
