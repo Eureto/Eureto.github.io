@@ -61,8 +61,6 @@ body {
 
 #showTime {
     font-family: 'Caveat', cursive;
-    /* font-family: 'Qahiri', sans-serif; */
-    /* font-family: 'Red Hat Mono', monospace; */
     font-size: var(--Normal-Font-Size);
     display: flex;
     flex-wrap: nowrap;
@@ -73,9 +71,9 @@ body {
     --sec-color: #9ca09b4b;
     --positionUp: -45px;
     --positionMid: 0px;
-    --positionBottom: 65px;
+    --positionBottom: 60px;
     --Normal-Font-Size: 50px;
-    --Small-Font-Size: 40px;
+    --Small-Font-Size: 35px;
 }
 
 #second {

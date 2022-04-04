@@ -5,19 +5,13 @@ let showLocalTimeInterval;
 let firstTimeChangeMinuteFunction = true;
 let firstTimeChangeSecondFunction = true;
 let firstTimeChangeHourFunction = true;
-let currentM = 3;
-let currentS = 3;
-let currentH = 3;
-let prevM;
-let prevS;
-let prevH;
-let min = [];
-let sec = [];
-let hour = [];
+let currentM = 3, currentH = 3, currentS = 3;
+let prevM, prevS, prevH;
+let min = [], sec = [], hour = [];
 
 function Start() {
-    // let date = new Date('January 19, 2010 23:15:30');
-    let date = new Date();
+    let date = new Date('January 19, 2010 20:15:30');
+    // let date = new Date();
 
     let hour = date.getHours();
 
@@ -26,7 +20,7 @@ function Start() {
     } else {
         loadDarkTheme();
     }
-    showLocalTimeInterval = setInterval(ShowLocalTime, 2);
+    showLocalTimeInterval = setInterval(ShowLocalTime, 1);
     //zapytanie o lokalizacje
     navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
 
@@ -38,8 +32,11 @@ function ChangeSecond(s) {
         a = currentS - 2;
         b = currentS - 1;
         c = currentS;
-        if(a == (-1)) {a = 2; b = 3}
-        if(a == 0) a = 3;
+        if (a == (-1)) {
+            a = 2;
+            b = 3
+        }
+        if (a == 0) a = 3;
 
         sec[a] = s + 1;
         sec[b] = s;
@@ -75,14 +72,12 @@ function ChangeSecond(s) {
             sec[currentS] = s + 1;
             if (sec[currentS] < 10) {
                 sec[currentS] = '0' + sec[currentS];
-            }else if(sec[currentS] == 60)
-            {
+            } else if (sec[currentS] == 60) {
                 sec[currentS] = "00";
             }
             document.getElementById(`second-${currentS}`).innerHTML = sec[currentS];
             currentS--;
-            if(currentS < 1)
-            {
+            if (currentS < 1) {
                 currentS = 3;
             }
         }
@@ -96,8 +91,11 @@ function ChangeMinute(m) {
         a = currentM - 2;
         b = currentM - 1;
         c = currentM;
-        if(a == (-1)) {a = 2; b = 3}
-        if(a == 0) a = 3;
+        if (a == (-1)) {
+            a = 2;
+            b = 3
+        }
+        if (a == 0) a = 3;
 
         min[a] = m + 1;
         min[b] = m;
@@ -133,14 +131,12 @@ function ChangeMinute(m) {
             min[currentM] = m + 1;
             if (min[currentM] < 10) {
                 min[currentM] = '0' + min[currentM];
-            }else if(min[currentM] == 60)
-            {
+            } else if (min[currentM] == 60) {
                 min[currentM] = "00";
             }
             document.getElementById(`minute-${currentM}`).innerHTML = min[currentM];
             currentM--;
-            if(currentM < 1)
-            {
+            if (currentM < 1) {
                 currentM = 3;
             }
         }
@@ -154,28 +150,29 @@ function ChangeHour(h) {
         a = currentH - 2;
         b = currentH - 1;
         c = currentH;
-        if(a == (-1)) {a = 2; b = 3}
-        if(a == 0) a = 3;
+        if (a == (-1)) {
+            a = 2;
+            b = 3
+        }
+        if (a == 0) a = 3;
 
         hour[a] = h + 1;
         hour[b] = h;
         hour[c] = h - 1;
 
-        if(hour[a] < 10) {
+        if (hour[a] < 10) {
             hour[a] = '0' + hour[a];
         }
-        if(hour[a] > 23)
-        {
+        if (hour[a] > 23) {
             hour[a] = '00';
         }
-        if(hour[b] < 10) {
+        if (hour[b] < 10) {
             hour[b] = '0' + hour[b];
         }
-        if(hour[c] < 0)
-        {
+        if (hour[c] < 0) {
             hour[c] = 23;
         }
-        if(hour[c] < 10) {
+        if (hour[c] < 10) {
             hour[c] = '0' + hour[c];
         }
 
@@ -193,14 +190,12 @@ function ChangeHour(h) {
             hour[currentH] = h + 1;
             if (hour[currentH] < 10) {
                 hour[currentH] = '0' + hour[currentH];
-            }else if(hour[currentH] == 24)
-            {
+            } else if (hour[currentH] == 24) {
                 hour[currentH] = "00";
             }
             document.getElementById(`hour-${currentH}`).innerHTML = hour[currentH];
             currentH--;
-            if(currentH < 1)
-            {
+            if (currentH < 1) {
                 currentH = 3;
             }
         }
@@ -238,27 +233,12 @@ function ShowLocalTime() {
 
     let hour = localTime.getHours();
     ChangeHour(hour);
-    
-    // if (hour < 10) {
-    //     hour = "0" + hour;
-    // }
-    // document.getElementById("hour").innerHTML = hour;
 
     let minute = localTime.getMinutes();
     ChangeMinute(minute);
 
-    // if (minute < 10) {
-    //     minute = "0" + minute;
-    // }
-    // document.getElementById("minute").innerHTML = minute;
-
     let second = localTime.getSeconds();
     ChangeSecond(second);
-    // if (second < 10) {
-    //     second = "0" + second;
-    // }
-    // document.getElementById("second").innerHTML = second;
-
 
 }
 
@@ -294,26 +274,13 @@ function ShowSelectedTime() {
 
     let hour = selectedTime.getHours();
     ChangeHour(hour);
-    
-    // if (hour < 10) {
-    //     hour = "0" + hour;
-    // }
-    // document.getElementById("hour").innerHTML = hour;
 
     let minute = selectedTime.getMinutes();
     ChangeMinute(minute);
-    
-    // if (minute < 10) {
-    //     minute = "0" + minute;
-    // }
-    // document.getElementById("minute").innerHTML = minute;
 
     let second = selectedTime.getSeconds();
     ChangeSecond(second);
-    // if (second < 10) {
-    //     second = "0" + second;
-    // }
-    // document.getElementById("second").innerHTML = second;
+
 }
 
 
@@ -327,11 +294,11 @@ function loadLightTheme() {
     document.getElementById('dot').style.backgroundColor = "#343332";
     document.getElementById('ChangeLocationButton').style.borderColor = "#343332";
     document.getElementById('earthIcon').src = '/icons/white-24dp/1x/outline_public_white_24dp.png';
-    document.getElementById("showTime").style.setProperty('--main-color','#454545');
-    document.getElementById("showTime").style.setProperty('--sec-color','#9ca09b');
+    document.getElementById("showTime").style.setProperty('--main-color', '#454545');
+    document.getElementById("showTime").style.setProperty('--sec-color', '#9ca09b');
 
     mapTheme = "mapbox/light-v10";
-    
+
 }
 
 function ShowHideMap() {
@@ -386,7 +353,6 @@ async function getTimeZone(lat, lng) {
     }
 }
 
-
 function LoadMap(lat, lng) {
 
     var map = L.map('map', {
@@ -420,8 +386,9 @@ function getLatLon(position) {
     LoadMap(latitude, longitude);
 }
 
+// Pokazanie lokalizacji stolicy na mapie
 async function UserLocationDenied(error) {
-    //Jeśli uzytkownik nie zgodzi sie na udostępnienie lokalizacji to na mapie pokaze sie likalizacja stolicy panstwa w ktorym jest
+
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     let timeZoneArr = timeZone.split('/');
     let capital = timeZoneArr[1];
