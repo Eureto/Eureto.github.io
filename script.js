@@ -10,8 +10,8 @@ let prevM, prevS, prevH;
 let min = [], sec = [], hour = [];
 
 function Start() {
-    let date = new Date('January 19, 2010 20:15:30');
-    // let date = new Date();
+    //let date = new Date('January 19, 2010 20:15:30');
+    let date = new Date();
 
     let hour = date.getHours();
 
