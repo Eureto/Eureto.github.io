@@ -21,7 +21,6 @@ function Start() {
         loadDarkTheme();
     }
     showLocalTimeInterval = setInterval(ShowLocalTime, 1);
-    //zapytanie o lokalizacje
     navigator.geolocation.getCurrentPosition(getLatLon, UserLocationDenied);
 
 }
@@ -341,7 +340,7 @@ async function getTimeZone(lat, lng) {
     } catch (err) {
         if (!CORSPromptOccured) {
             let confirmRedirect = confirm(`Aby skorzystać z wszystkich funkcji strony należy udać sie pod adres https://cors-anywhere.herokuapp.com/ i klikąć w przycik :)
-        Czy chcesz udać się pod ten adres ?`);
+        Czy chcesz udać się pod ten adres ? | If you want to use all functions you will be redirected to https://cors-anywhere.herokuapp.com/ and click button. Do you want to do that?`);
             if (confirmRedirect == true) {
                 window.location = "https://cors-anywhere.herokuapp.com/";
             } else {
@@ -386,7 +385,6 @@ function getLatLon(position) {
     LoadMap(latitude, longitude);
 }
 
-// Pokazanie lokalizacji stolicy na mapie
 async function UserLocationDenied(error) {
 
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -394,6 +392,7 @@ async function UserLocationDenied(error) {
     let capital = timeZoneArr[1];
     let continent = timeZoneArr[0];
     let cord, lng, lat;
+    try{
     let response = await fetch(`/JSON/${continent}.json`);
     let JSON = await response.json();
     if (response.ok) {
@@ -410,6 +409,13 @@ async function UserLocationDenied(error) {
         lat = 0;
         lng = 0;
     }
+    }catch(error)
+    {
+        console.error(error);
+        lat = 0;
+        lng = 0;
+    }
+  
     LoadMap(lat, lng);
 
     switch (error.code) {
